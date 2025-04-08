@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de texto HTML</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <img src="logo.png" alt="Site Logo" class="logo">
+        <h3 class="text-center">Editor de texto HTML</h3>
+        <div class="editor-toolbar">
+            <button class="btn" onclick="formatText('bold')">Bold</button>
+            <button class="btn" onclick="formatText('italic')">Italic</button>
+            <button class="btn" onclick="formatText('underline')">Underline</button>
+            <input type="color" id="textColor" class="btn" title="Text Color">
+            <button class="btn" onclick="applyColor()">Aplicar cor</button>
+            <input type="file" id="imageInput" class="btn" accept="image/*" title="Insert Image">
+            <button class="btn" onclick="insertImage()">Inserir imagem</button>
+        </div>
+        <div class="editor-container" contenteditable="true" id="editor">
+        </div>
+        <button class="btn btn-success" onclick="generateHtml()">Generate HTML</button>
+        <textarea class="form-control" id="outputHtml" rows="10" readonly></textarea>
+    </div>
+
+    <script>
+        function formatText(command) {
+            document.execCommand(command, false, null);
+        }
+
+        function applyColor() {
+            const color = document.getElementById('textColor').value;
+            document.execCommand('foreColor', false, color);
+        }
+
+        function insertImage() {
+            const fileInput = document.getElementById('imageInput');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.execCommand('insertImage', false, e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function generateHtml() {
+            const editorContent = document.getElementById('editor').innerHTML;
+            document.getElementById('outputHtml').value = editorContent;
+        }
+    </script>
+</body>
+
+</html>
